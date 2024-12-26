@@ -166,15 +166,6 @@ Tree* get_different_trees(int n) {
 
 	set_permutation_list(plist, n);
 
-	printf("<%d>\n", fact);
-	/*for (int i = 0; i < fact; i++) {
-		for (int j = 0; j < n;j++) {
-			printf("%d ",plist[i][j]);
-		}
-		putchar('\n');
-	}
-	putchar('\n');*/
-
 	for (int i = 0; i < fact;i++) {
 		Tree current = create_tree(plist[i][0]);
 		Tree* current_p = &current;

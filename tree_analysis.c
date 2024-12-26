@@ -120,7 +120,10 @@ void report_trees(const char* file_name) {
 		cmp_histogram[i][j] = 0;
 	}
 
+	fprintf(fp, ",all avg,all std,avl avg,avl std,cmp avg,cmp std,,all num,avl num,cmp num,\n");
+
 	for (int i = 1; i <= N_MAX; i++) {
+		printf("<%d>\n",i);
 		Tree* trees = get_different_trees(i);
 
 		analyze_all_tree_hight(trees);
@@ -130,7 +133,7 @@ void report_trees(const char* file_name) {
 		analyze_avl_hight_distribution(avl_histogram, trees, i);
 		analyze_cmp_hight_distribution(cmp_histogram, trees, i);
 		
-		fprintf(fp,"%d,%f,%f,%f,%f,%f,%f,%d,%d,%d,\n",i,all_avg,all_sigma,avl_avg,avl_sigma,cmp_avg,cmp_sigma,all_tree_num,avl_tree_num,cmp_tree_num);
+		fprintf(fp,"%d,%f,%f,%f,%f,%f,%f,,%d,%d,%d,\n",i,all_avg,all_sigma,avl_avg,avl_sigma,cmp_avg,cmp_sigma,all_tree_num,avl_tree_num,cmp_tree_num);
 
 		for (int i = 0; trees[i] != NULL; i++) delete_tree(trees[i]);
 		free(trees);
@@ -144,13 +147,19 @@ void report_trees(const char* file_name) {
 		}
 	}
 
+	fprintf(fp,"all hight,0,1,2,3,4,5,6,7,8,\n");
+
 	for (int i = 0; i < N_MAX+1; i++) {
-		fprintf(fp,"%d,",i);
+		if (i == 0) fprintf(fp,"total,");
+		else fprintf(fp,"%d,",i);
+
 		for (int j = 0; j < N_MAX; j++) {
 			fprintf(fp,"%d,",all_histogram[i][j]);
 		}
 		fprintf(fp, "\n");
 	}
+
+	fprintf(fp, "avl hight,0,1,2,3,4,5,6,7,8,\n");
 
 	for (int i = 0; i < N_MAX + 1; i++) {
 		fprintf(fp, "%d,", i);
@@ -159,6 +168,8 @@ void report_trees(const char* file_name) {
 		}
 		fprintf(fp, "\n");
 	}
+
+	fprintf(fp, "cmp hight,0,1,2,3,4,5,6,7,8,\n");
 
 	for (int i = 0; i < N_MAX + 1; i++) {
 		fprintf(fp, "%d,", i);

@@ -22,6 +22,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{mathtools}
+\usepackage{url}
 \mathtoolsset{showonlyrefs=true}
 \title{}
 \author{62304644 片山さくら}
@@ -30,19 +31,34 @@
 
 \section{設計方針・プログラム}
 
+
 \subsection{実行環境}
 \begin{list}{\labelitemi}{\leftmargin=1em}
-\item OS: Windows 11
-\item 開発環境: Visual Studio 2019 v142
-\item ビルドツール: MSbuild 16.11.2.50704
-\item コンパイラ: MSVC 19.29.30157 for x86
-\item C言語標準: C17
+  \item OS: Windows 11
+  \item 開発環境: Visual Studio 2019 v142
+  \item ビルドツール: MSbuild 16.11.2.50704
+  \item コンパイラ: MSVC 19.29.30157 for x86
+  \item C言語標準: C17
 \end{list}
 
 \subsection{使用ライブラリ}
 \begin{list}{\labelitemi}{\leftmargin=1em}
-\item freeglut,glfw.3.4.0,glm.1.0.1 : グラフィック用(NuGetパッケージを使用)
+  \item freeglut,glfw.3.4.0,glm.1.0.1 : グラフィック用(NuGetパッケージを使用)
 \end{list}
+
+\subsection{プログラムの動作}
+
+プログラム全体の機能は、順列の生成、相異なる二分探索木の生成、二分探索木の高さの平均・分散の算出、二分木の描画である。
+このプログラムはユーザーと標準入力やウィンドウを通して対話しながら動作する。
+
+\subsection{プログラム中で使用する構造体の説明}
+
+Node構造体に自身のキー、左右の子ノードへのポインタを持たせることで二分探索木を実装した。
+binary\_tree.cに定義される関数を用いてNodeオブジェクトを生成、二分探索木として構成する事ができる。
+また、Nodeオブジェクトのグラフィクス的な側面としてNodeGraphic構造体を定義した。NodeGraphicオブジェクトは
+文字の色やエッジの色を保持し、tree\_graphic.cに定義される関数を用いて、構成済みの二分探索木を描画することができる。
+NodeオブジェクトはNodeGraphicオブジェクトに依存せず生成や木の構成が可能である一方、NodeGraphicオブジェクトはNodeオブジェクトを
+もとに生成される。
 
 \subsection{プログラムの構成・概要}
 
@@ -126,11 +142,12 @@ binary\_tree.cにおいて重要な関数は以下のとおりである。
 \end{list}
 
 とある順列を二分探索木に入力する際、同様の配置を取る二分探索木が生成することがある。
-そのため構造的な重複を避けるために、二分木の構造とノード前順で探索し順に記録して出来た順列が
+そのため構造的な重複を避けるために、二分木の構造とノードを前順で探索し順に記録して出来た順列が
 一対一に対応することを利用し、get\_different\_trees関数内ではutility.cのpermutation\_num関数を用いて二分木にIDを付け
 重複したものは記録しないようにしている。
 
-\textrm{実行例 n=4の場合 (なお、完全部分木の場合文字は赤、AVL木の場合文字は青、それ以外は黒で表示される。)}
+
+\textrm{実行例 n=4の場合 (なお、完全二分木の場合文字は赤、AVL木の場合文字は青、それ以外は黒で表示される。)}
 
 \includegraphics[width=4cm]{2.png}
 \includegraphics[width=4cm]{3.png}
@@ -188,9 +205,9 @@ nが1から9までの場合についてそれぞれの木の高さの平均と�
 
 ➁と➂の結果をまとめそれぞれの高さの平均について比較したグラフをいかに示す。
 
-\begin{cases}
+\begin{center}
 \includegraphics[width=8cm]{hikaku_g.png}
-\end{cases}
+\end{center}
 
 また、相異なる二分探索木の集合全体の要素数、AVL木のみの要素数、完全二分木のみの要素数を以下の図にまとめた。
 なお、縦軸は対数軸である。
@@ -199,5 +216,47 @@ nが1から9までの場合についてそれぞれの木の高さの平均と�
 \includegraphics[width=5cm]{num_t.png}
 \includegraphics[width=6cm]{num_g.png}
 \end{center}
+
+\newpage
+
+\section{ソースコード}
+
+\subsection{ソースファイル}
+
+\lstinputlisting[caption=binary_tree.c]{../binary_tree.c}
+
+\lstinputlisting[caption=utility.c]{../utility.c}
+
+\lstinputlisting[caption=tree_analysis.c]{../tree_analysis.c}
+
+\lstinputlisting[caption=tree_graphic.c]{../tree_graphic.c}
+
+\lstinputlisting[caption=simulation_graphic.c]{../simulation_graphic.c}
+
+\lstinputlisting[caption=main.c]{../main.c}
+
+\lstinputlisting[caption=list.c]{../list.c}
+
+\lstinputlisting[caption=position.c]{../position.c}
+
+\subsection{ヘッダファイル}
+
+\lstinputlisting[caption=binary_tree.h]{../binary_tree.h}
+
+\lstinputlisting[caption=utility.h]{../utility.h}
+
+\lstinputlisting[caption=tree_analysis.h]{../tree_analysis.h}
+
+\lstinputlisting[caption=tree_graphic.h]{../tree_graphic.h}
+
+\lstinputlisting[caption=simulation_graphic.h]{../simulation_graphic.h}
+
+\lstinputlisting[caption=list.h]{../list.h}
+
+\lstinputlisting[caption=position.h]{../position.h}
+
+最新のコードは以下のリンクから取得してください。
+
+\url{https://github.com/zenon-paul/opengl_binary_tree}
 
 \end{document}

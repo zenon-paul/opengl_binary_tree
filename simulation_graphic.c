@@ -27,9 +27,10 @@ Tree current_tree_on_display;
 int current_tree = -1;
 
 void update_current_tree_on_display(GLFWwindow* window, Tree root) {
+	if (root == NULL) return;
 	current_tree_on_display = root;
 	float char_color[3] = { 0.0,0.0,0.0 };
-	float edge_color[3] = { 0.8,0.8,0.8 };
+	float edge_color[3] = { 0.7,0.7,0.7 };
 	float box_color[3] = { 1.0,1.0,1.0 };
 
 	if (is_AVL_tree(root)) {
@@ -57,13 +58,19 @@ void update_current_tree_on_display(GLFWwindow* window, Tree root) {
 
 Tree* generate_trees() {
 	int num;
-	printf("Permutation Generator: input a number> ");
+	printf("Input a number> ");
 	do {} while (scanf("%d", &num) != 1);
 	Tree* trees = get_different_trees(num);
 
 	analyze_all_tree_hight(trees);
 	analyze_AVL_tree_hight(trees);
 	analyze_complete_binary_tree_hight(trees);
+
+	printf("Click left or right button\n");
+	printf("You can browse all trees when you push right button\n");
+	printf("You can browse AVL trees when you push left button\n");
+	printf("	AVL trees have blue charactors\n");
+	printf("	Complete binary trees have red charactors\n");
 
 	return trees;
 }
@@ -104,7 +111,6 @@ void mouse_callback(GLFWwindow* pwin, int button, int action, int mods) {
 	}
 
 	if (current_tree == -1) {
-		printf("click display_window\n");
 		tree_list = generate_trees();
 		current_tree = 0;
 		return;
@@ -115,7 +121,6 @@ void mouse_callback(GLFWwindow* pwin, int button, int action, int mods) {
 		if (tree_list[current_tree] == NULL) {
 			for (int i = 0; tree_list[i] != NULL; i++) delete_tree(tree_list[i]);
 			free(tree_list);
-			printf("click display_window\n");
 			tree_list = generate_trees();
 			current_tree = 0;
 		}
@@ -125,11 +130,11 @@ void mouse_callback(GLFWwindow* pwin, int button, int action, int mods) {
 			delete_graphical_tree(current_tree_on_display);
 		}
 		printf("[%d]\n",current_tree);
-		update_current_tree_on_display(window2, tree_list[current_tree]);
-		current_tree++;
 		if (button == GLFW_MOUSE_BUTTON_LEFT) {
 			while (tree_list[current_tree] != NULL && is_AVL_tree(tree_list[current_tree]) == 0) current_tree++;
 		}
+		update_current_tree_on_display(window2, tree_list[current_tree]);
+		current_tree++;
 	}
 }
 
